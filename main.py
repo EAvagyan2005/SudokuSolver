@@ -5,7 +5,7 @@ s_list = [None] * 11
 null_list = list()
 NULL_VAL = 0
 end_rec = False
-
+probable_list = [None] * 11
 
 def get_input():
     file = open("sudoku.txt", "r")
