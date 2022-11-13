@@ -11,8 +11,8 @@ probable_list = [None] * 11
 file = open("sudoku.txt", "r")
 exit_file = open('answers.txt', 'w')
 end_x, end_y = 0, 0
-inter_bet_prints = 1000 # interval between prints
-curr_num_of_cycl_bef_print = 0 # current number of cycles before print
+inter_bet_prints = 10 # interval between prints
+curr_num_of_cyc_bef_print = 0 # current number of cycles before print
 
 
 def get_input():
@@ -45,11 +45,11 @@ def check(x, y, sl_list):
 
 
 def print_list(ls):
-    print()
+    os.system("cls")
     for j in ls:
         if j is not None:
             for l in j:
-                print(l if str(l).isdigit() else ' ', end=' ')
+                print(l if str(l) > str(0) else ' ', end=' ')
                 exit_file.write(str(l) if str(l).isdigit() else ' ')
                 exit_file.write(' ')
             print()
@@ -59,7 +59,7 @@ def print_list(ls):
 
 def try_comb(k, sl_list):
     global end_rec
-    global currnumofcyclbefprint
+    global curr_num_of_cyc_bef_print
     if len(null_list) == k+1:
         end_rec = True
         print_list(sl_list)
@@ -72,12 +72,11 @@ def try_comb(k, sl_list):
         new_sl_list[curr_x][curr_y] = j
         if check(curr_x, curr_y, new_sl_list) and not end_rec:
 
-            # if curr_num_of_cycl_bef_print >= inter_bet_prints:
-            #     os.system("cls")
-            #     print_list(new_sl_list) 
-            #     curr_num_of_cycl_bef_print = 0
-            #     time.sleep(0.1)
-            # curr_num_of_cycl_bef_print += 1
+            if curr_num_of_cyc_bef_print >= inter_bet_prints:
+                print_list(new_sl_list)
+                curr_num_of_cyc_bef_print = 0
+                time.sleep(0.1)
+            curr_num_of_cyc_bef_print += 1
 
             # you can turn this on to see the process of brute-force
             x = try_comb(k + 1, new_sl_list)
@@ -108,3 +107,4 @@ if __name__ == "__main__":
     print(time.time()-start_time, 's')
     file.close()
     exit_file.close()
+    input()
