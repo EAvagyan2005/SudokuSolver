@@ -48,9 +48,9 @@ def print_list(ls):
                 print(l if str(l).isdigit() else ' ', end=' ')
                 exit_file.write(str(l) if str(l).isdigit() else ' ')
                 exit_file.write(' ')
-        print()
-        exit_file.write('\n')
-    time.sleep(0.1)
+            print()
+            exit_file.write('\n')
+    # time.sleep(0.1)
 
 
 def try_comb(k, sl_list):
@@ -59,9 +59,7 @@ def try_comb(k, sl_list):
         end_rec = True
         print_list(sl_list)
         return True
-    if end_rec:
-        print_list(sl_list)
-        return True
+
     curr_x, curr_y = null_list[k + 1]
     for j in range(1, 10):
         x = False
@@ -69,7 +67,6 @@ def try_comb(k, sl_list):
         new_sl_list[curr_x][curr_y] = j
         if check(curr_x, curr_y, new_sl_list) and not end_rec:
             # print_list(new_sl_list) # you can turn this on to see the process of brute-force
-            exit_file.write(str(end_rec) + '\n')
             x = try_comb(k + 1, new_sl_list)
             if new_sl_list[end_x][end_y] > 0:
                 end_rec = True
@@ -88,6 +85,8 @@ def start_solving():
         n_sl_list[null_list[0][0]][null_list[0][1]] = i
         if check(null_list[0][0], null_list[0][1], n_sl_list) and not end_rec:
             try_comb(0, s_list)
+
+
 if __name__ == "__main__":
     get_input()
     get_nulls()
