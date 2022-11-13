@@ -1,20 +1,21 @@
 import math
 import time
 
+
 s_list = [None] * 11
 null_list = list()
 NULL_VAL = 0
 end_rec = False
 probable_list = [None] * 11
+file = open("sudoku.txt", "r")
 exit_file = open('answers.txt', 'w')
 end_x, end_y = 0, 0
 
 
 def get_input():
-    file = open("sudoku.txt", "r")
     global s_list
     for j in range(1, 10):
-        s_list[j] = list(map(lambda x: int(x), file.readline().split()))
+        s_list[j] = [int(x) for x in file.readline() if x.isdigit()]
         s_list[j].insert(0, "$")
 
 
@@ -88,6 +89,10 @@ def start_solving():
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     get_input()
     get_nulls()
     start_solving()
+    print(time.time()-start_time, 's')
+    file.close()
+    exit_file.close()
