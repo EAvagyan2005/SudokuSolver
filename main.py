@@ -1,5 +1,6 @@
 import math
 import time
+import os
 
 
 s_list = [None] * 11
@@ -10,6 +11,8 @@ probable_list = [None] * 11
 file = open("sudoku.txt", "r")
 exit_file = open('answers.txt', 'w')
 end_x, end_y = 0, 0
+interbetprints = 1000 # interval between prints
+currnumofcyclbefprint = 0 # current number of cycles before print
 
 
 def get_input():
@@ -51,11 +54,12 @@ def print_list(ls):
                 exit_file.write(' ')
             print()
             exit_file.write('\n')
-    # time.sleep(0.1)
+    
 
 
 def try_comb(k, sl_list):
     global end_rec
+    global currnumofcyclbefprint
     if len(null_list) == k+1:
         end_rec = True
         print_list(sl_list)
@@ -67,7 +71,15 @@ def try_comb(k, sl_list):
         new_sl_list = sl_list.copy()
         new_sl_list[curr_x][curr_y] = j
         if check(curr_x, curr_y, new_sl_list) and not end_rec:
-            # print_list(new_sl_list) # you can turn this on to see the process of brute-force
+
+            # if currnumofcyclbefprint >= interbetprints:
+            #     os.system("cls")
+            #     print_list(new_sl_list) 
+            #     currnumofcyclbefprint = 0
+            #     time.sleep(0.1)
+            # currnumofcyclbefprint += 1
+
+            # you can turn this on to see the process of brute-force
             x = try_comb(k + 1, new_sl_list)
             if new_sl_list[end_x][end_y] > 0:
                 end_rec = True
