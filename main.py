@@ -6,6 +6,9 @@ null_list = list()
 NULL_VAL = 0
 end_rec = False
 probable_list = [None] * 11
+exit_file = open('answers.txt', 'w')
+end_x, end_y = 0, 0
+
 
 def get_input():
     file = open("sudoku.txt", "r")
@@ -41,12 +44,23 @@ def print_list(ls):
     print()
     for j in ls:
         if j is not None:
-            print(*j, sep=' ')
+            for l in j:
+                print(l if str(l).isdigit() else ' ', end=' ')
+                exit_file.write(str(l) if str(l).isdigit() else ' ')
+                exit_file.write(' ')
+        print()
+        exit_file.write('\n')
+    time.sleep(0.1)
 
 
 def try_comb(k, sl_list):
     global end_rec
-    if len(null_list) <= k + 1:
+    if len(null_list) == k+1:
+        end_rec = True
+        print_list(sl_list)
+        return True
+    if end_rec:
+        print_list(sl_list)
         return True
     curr_x, curr_y = null_list[k + 1]
     for j in range(1, 10):
@@ -54,24 +68,26 @@ def try_comb(k, sl_list):
         new_sl_list = sl_list.copy()
         new_sl_list[curr_x][curr_y] = j
         if check(curr_x, curr_y, new_sl_list) and not end_rec:
+            # print_list(new_sl_list) # you can turn this on to see the process of brute-force
+            exit_file.write(str(end_rec) + '\n')
             x = try_comb(k + 1, new_sl_list)
-        if x and k == len(null_list) - 2:
-            print('I know the result')
-            print_list(new_sl_list)
-            time.sleep(2)
-            end_rec = True
-        if not x and j == 9:
-            new_sl_list[curr_x][curr_y] = 0
+            if new_sl_list[end_x][end_y] > 0:
+                end_rec = True
+                return True
+    if not end_rec:
+        new_sl_list[curr_x][curr_y] = 0
 
 
 def start_solving():
+    global end_x, end_y
+    end_x = null_list[-1][0]
+    end_y = null_list[-1][1]
+
     for i in range(1, 10):
         n_sl_list = s_list.copy()
         n_sl_list[null_list[0][0]][null_list[0][1]] = i
-        if check(null_list[0][0], null_list[0][1], n_sl_list):
+        if check(null_list[0][0], null_list[0][1], n_sl_list) and not end_rec:
             try_comb(0, s_list)
-
-
 if __name__ == "__main__":
     get_input()
     get_nulls()
